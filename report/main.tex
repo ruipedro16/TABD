@@ -1,0 +1,156 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{babel}
+\usepackage{hyperref}
+\usepackage[capitalise, noabbrev]{cleveref}
+\usepackage{a4wide}
+\usepackage{relsize}
+\usepackage{indentfirst}
+\usepackage{nameref}
+\usepackage{graphicx}
+\usepackage[normalem]{ulem}
+\usepackage{setspace}
+
+\onehalfspacing
+
+\hypersetup{
+    pdftitle={Advanced Topics in Databases},
+    pdfborder={0 0 0}
+}
+
+\title{Advanced Topics in Databases \\ [0.8em] \smaller Practical Assignment}
+\author{Andreia Genro \and Aníbal Silva \and Rui Fernandes}
+\date{\today}
+
+\begin{document}
+
+\renewcommand\labelitemi{--}
+\renewcommand{\today}{\ifcase \month\or January\or February\or March\or %
+April\or May\or June\or July\or August\or September\or October\or November\or %
+December\fi, \number \year}
+
+\begin{titlepage}
+    \begin{center}
+        \begin{minipage}{.75\linewidth}
+            \centering
+            \includegraphics[width=0.5\textwidth]{img/fcup.jpg}\par\vspace{1cm}
+            \vspace{1.5cm}
+            {\scshape\LARGE Faculty of Sciences of the University of Porto} \par
+            \vspace{1cm}
+            {\scshape\Large Department of Computer Science} \par
+            \vspace{1.5cm}
+            \maketitle
+        \end{minipage}
+    \end{center}
+    \vspace{2cm}
+    \thispagestyle{empty}
+    \pagebreak
+\end{titlepage}
+
+\pagebreak
+
+\pagenumbering{roman}
+
+\begin{abstract}
+This report describes the practical assignment of the Advanced Topics in Databases course. 
+
+This practical assignment consists in creating a data warehouse and conducting data analysis on it, as well as creating graphical reports using the Python library \texttt{matplotlib}.
+
+In this report, we briefly describe our approach to the problem and discuss the decisions
+we made.
+\end{abstract}
+
+\pagebreak
+
+\tableofcontents
+\listoffigures \pagebreak
+
+\pagenumbering{arabic}
+
+\section{Introduction}
+
+The data warehouse contains data from national swimming competitions at the master level (\textit{i.e.} class of competitive swimming for swimmers 25 years and older), namely Troféu Pescada 2021 and the Summer 2021 Championship.
+
+\subsection*{Structure of the Report}
+
+The remainder of the report is structured as follows:
+
+\begin{itemize}
+    \item In \cref{sec:analysis}, \textbf{\nameref{sec:analysis}}, we provide some insight into the data 
+    \item Finally, \cref{sec:conclusion}, \textbf{\nameref{sec:conclusion}}, concludes the report and suggests remarks for future work.
+\end{itemize}
+
+\pagebreak
+
+\section{Data Model} \label{sec:data-model}
+
+In the following section, we describe the data contained in the data warehouse.
+
+\subsection{Troféu Pescada}
+
+\subsubsection*{Constructor}
+
+\begin{itemize}
+    \item name
+    \item registration
+    \item version
+    \item contact
+    \begin{itemize}
+        \item name
+        \item street
+        \item city
+        \item zip
+        \item country
+        \item email
+        \item internet (website)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection*{Meet}
+
+\begin{itemize}
+    \item city
+    \item name
+    \item name.en
+    \item course
+    \item deadline
+    \item entrystartdate
+    \item entrytype
+    \item organizer
+    \item result.url
+    \item startmethod
+    \item timing
+    \item type
+    \item withdrawuntil
+    \item nation
+    \item maxentriesathlete
+    \item AGEDATE
+    \begin{itemize}
+        \item value
+        \item type
+    \end{itemize}
+    \item 
+    \item 
+    \item 
+    \item 
+    \item 
+    \item 
+    
+\end{itemize}
+
+\subsubsection*{Pool}
+
+
+\subsection{Summer Championship}
+
+\pagebreak
+
+\section{Data Analysis \& Visualization} \label{sec:analysis}
+
+\pagebreak
+
+\section{Conclusions \& Future Work} \label{sec:conclusion}
+
+
+\end{document}
