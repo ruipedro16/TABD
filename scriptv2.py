@@ -111,6 +111,7 @@ def create_annp_final_inputs(data, id_key):
         for idx, athlete in enumerate(club['ATHLETES']['ATHLETE']):
             license = athlete['@license'] if '@license' in athlete else str(int(id_key) + int(club['@clubid']) + idx)
             athletes.append({
+                'athleteid': athlete['@athleteid'],
                 'license': license,
                 'firstname': athlete['@firstname'],
                 'lastname': athlete['@lastname'],
@@ -206,8 +207,8 @@ def create_annp_final_inputs(data, id_key):
     sql += generate_sql_annp_final_meets(meets)
     sql += generate_sql_annp_final_clubs(clubs)
     sql += generate_sql_annp_final_athletes(athletes)
-    sql += generate_sql_annp_final_enrolls(enrolls)
-    sql += generate_sql_annp_final_swimstyle(swimstyle)
+    #sql += generate_sql_annp_final_enrolls(enrolls)
+    #sql += generate_sql_annp_final_swimstyle(swimstyle)
     sql += generate_sql_annp_final_swimstyle(swimstyle)
     sql += generate_sql_annp_final_sessions(sessions)
     sql += generate_sql_annp_final_events(events)
@@ -253,7 +254,9 @@ def generate_sql_annp_final_clubs(clubs):
 def generate_sql_annp_final_athletes(athletes):
     sql = ''
     for a in athletes:
-        sql += "INSERT INTO annp_final.athlete (license, firstname, lastname, gender, birthdate, nation) VALUES ('"
+        sql += "INSERT INTO annp_final.athlete (athleteid, license, firstname, lastname, gender, birthdate, nation) VALUES ('"
+        sql += a["athleteid"]
+        sql += "', '"
         sql += a['license']
         sql += "', '"
         sql += a['firstname']
@@ -279,22 +282,6 @@ def generate_sql_annp_final_enrolls(enrolls):
         sql += "', '"
         sql += e['clubid']
         sql += "');" 
-        sql += "\n"
-    return sql
-
-def generate_sql_annp_final_swimstyle(swimstyle):
-    sql = ''
-    for key in swimstyle:
-        s = swimstyle[key]
-        sql += "INSERT INTO annp_final.swimstyle (swimstyleid, distance, stroke, relaycount) VALUES ('"
-        sql += s['swimstyleid']
-        sql += "', '"
-        sql += s['distance']
-        sql += "', '"
-        sql += s['stroke']
-        sql += "', '"
-        sql += s['relaycount']
-        sql += "');"
         sql += "\n"
     return sql
 
@@ -351,14 +338,12 @@ def generate_sql_annp_final_events(events):
 def generate_sql_annp_final_results(results):
     sql = ''
     for r in results:
-        sql += "INSERT INTO annp_final.result (resultid, eventid, license, state, points, swimtime) VALUES ('"
+        sql += "INSERT INTO annp_final.result (resultid, eventid, license, points, swimtime) VALUES ('"
         sql += r['resultid']
         sql += "', '"
         sql += r['eventid']
         sql += "', '"
         sql += r['license']
-        sql += "', '"
-        sql += r['state']
         sql += "', '"
         sql += r['points']
         sql += "', '"
