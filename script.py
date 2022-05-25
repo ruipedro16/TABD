@@ -111,6 +111,7 @@ def create_annp_final_inputs(data, id_key):
         for idx, athlete in enumerate(club['ATHLETES']['ATHLETE']):
             license = athlete['@license'] if '@license' in athlete else str(int(id_key) + int(club['@clubid']) + idx)
             athletes.append({
+                'athleteid': athlete['@athleteid'],
                 'license': license,
                 'firstname': athlete['@firstname'],
                 'lastname': athlete['@lastname'],
@@ -206,8 +207,8 @@ def create_annp_final_inputs(data, id_key):
     sql += generate_sql_annp_final_meets(meets)
     sql += generate_sql_annp_final_clubs(clubs)
     sql += generate_sql_annp_final_athletes(athletes)
-    sql += generate_sql_annp_final_enrolls(enrolls)
-    sql += generate_sql_annp_final_swimstyle(swimstyle)
+    #sql += generate_sql_annp_final_enrolls(enrolls)
+    #sql += generate_sql_annp_final_swimstyle(swimstyle)
     sql += generate_sql_annp_final_swimstyle(swimstyle)
     sql += generate_sql_annp_final_sessions(sessions)
     sql += generate_sql_annp_final_events(events)
@@ -218,7 +219,7 @@ def create_annp_final_inputs(data, id_key):
 def generate_sql_annp_final_meets(meets):
     sql = ''
     for m in meets:
-        sql +=  "INSERT IGNORE INTO `annp_final`.`meet` (`meetid`, `name`, `course`, `city`, `nation`) VALUES ('"
+        sql +=  "INSERT INTO annp_final.meet (meetid, name, course, city, nation) VALUES ('"
         sql += str(m['meetid'])
         sql += "', '"
         sql += m['name']
@@ -236,7 +237,7 @@ def generate_sql_annp_final_meets(meets):
 def generate_sql_annp_final_clubs(clubs):
     sql = ''
     for c in clubs:
-        sql += "INSERT IGNORE INTO `annp_final`.`club` (`clubid`, `code`, `name`, `nation`, `region`) VALUES ('"
+        sql += "INSERT INTO annp_final.club (clubid, code, name, nation, region) VALUES ('"
         sql += c['clubid']
         sql += "', '"
         sql += c['code']
@@ -253,7 +254,9 @@ def generate_sql_annp_final_clubs(clubs):
 def generate_sql_annp_final_athletes(athletes):
     sql = ''
     for a in athletes:
-        sql += "INSERT IGNORE INTO `annp_final`.`athlete` (`license`, `firstname`, `lastname`, `gender`, `birthdate`, `nation`) VALUES ('"
+        sql += "INSERT INTO annp_final.athlete (athleteid, license, firstname, lastname, gender, birthdate, nation) VALUES ('"
+        sql += a["athleteid"]
+        sql += "', '"
         sql += a['license']
         sql += "', '"
         sql += a['firstname']
@@ -272,7 +275,7 @@ def generate_sql_annp_final_athletes(athletes):
 def generate_sql_annp_final_enrolls(enrolls):
     sql = ''
     for e in enrolls:
-        sql += "INSERT IGNORE INTO `annp_final`.`enrolls` (`meetid`, `license`, `clubid`) VALUES ('"
+        sql += "INSERT INTO annp_final.enrolls (meetid, license, clubid) VALUES ('"
         sql += str(e['meetid'])
         sql += "', '"
         sql += e['license']
@@ -286,23 +289,7 @@ def generate_sql_annp_final_swimstyle(swimstyle):
     sql = ''
     for key in swimstyle:
         s = swimstyle[key]
-        sql += "INSERT IGNORE INTO `annp_final`.`swimstyle` (`swimstyleid`, `distance`, `stroke`, `relaycount`) VALUES ('"
-        sql += s['swimstyleid']
-        sql += "', '"
-        sql += s['distance']
-        sql += "', '"
-        sql += s['stroke']
-        sql += "', '"
-        sql += s['relaycount']
-        sql += "');"
-        sql += "\n"
-    return sql
-
-def generate_sql_annp_final_swimstyle(swimstyle):
-    sql = ''
-    for key in swimstyle:
-        s = swimstyle[key]
-        sql += "INSERT IGNORE INTO `annp_final`.`swimstyle` (`swimstyleid`, `distance`, `stroke`, `relaycount`) VALUES ('"
+        sql += "INSERT INTO annp_final.swimstyle (swimstyleid, distance, stroke, relaycount) VALUES ('"
         sql += s['swimstyleid']
         sql += "', '"
         sql += s['distance']
@@ -317,7 +304,7 @@ def generate_sql_annp_final_swimstyle(swimstyle):
 def generate_sql_annp_final_sessions(sessions):
     sql = ''
     for s in sessions:
-        sql += "INSERT IGNORE INTO `annp_final`.`session` (`sessionid`, `name`, `date`, `time`, `meetid`) VALUES ('"
+        sql += "INSERT INTO annp_final.session (sessionid, name, date, time, meetid) VALUES ('"
         sql += s['sessionid']
         sql += "', '"
         sql += s['name']
@@ -334,7 +321,7 @@ def generate_sql_annp_final_sessions(sessions):
 def generate_sql_annp_final_events(events):
     sql = ''
     for e in events:
-        sql += "INSERT IGNORE INTO `annp_final`.`event` (`eventid`, `gender`, `time`, `sessionid`, `swimstyleid`) VALUES ('"
+        sql += "INSERT INTO annp_final.event (eventid, gender, time, sessionid, swimstyleid) VALUES ('"
         sql += e['eventid']
         sql += "', '"
         sql += e['gender']
@@ -351,14 +338,12 @@ def generate_sql_annp_final_events(events):
 def generate_sql_annp_final_results(results):
     sql = ''
     for r in results:
-        sql += "INSERT IGNORE INTO `annp_final`.`result` (`resultid`, `eventid`, `license`, `state`, `points`, `swimtime`) VALUES ('"
+        sql += "INSERT INTO annp_final.result (resultid, eventid, license, points, swimtime) VALUES ('"
         sql += r['resultid']
         sql += "', '"
         sql += r['eventid']
         sql += "', '"
         sql += r['license']
-        sql += "', '"
-        sql += r['state']
         sql += "', '"
         sql += r['points']
         sql += "', '"
@@ -370,7 +355,7 @@ def generate_sql_annp_final_results(results):
 def generate_sql_annp_final_splits(splits):
     sql = ''
     for s in splits:
-        sql += "INSERT IGNORE INTO `annp_final`.`split` (`splitid`, `resultid`, `distance`, `time`) VALUES ('"
+        sql += "INSERT INTO annp_final.split (splitid, resultid, distance, time) VALUES ('"
         sql += s['splitid']
         sql += "', '"
         sql += s['resultid']
@@ -448,8 +433,9 @@ class Database:
 
     def __str__(self):
 #       CREATE DATABASE
-        s = 'DROP DATABASE IF EXISTS `{name}`;\n'.format(name=self.name)
-        s += 'CREATE DATABASE `{name}`;\n'.format(name=self.name)
+        s = 'DROP DATABASE IF EXISTS {name};\n'.format(name=self.name)
+        s += 'CREATE DATABASE {name};\n'.format(name=self.name)
+        s += 'CREATE SCHEMA {name}; \n'.format(name=self.name)
     
 #       CREATE TABLES
         for table in self.tables:
@@ -529,10 +515,10 @@ class Table:
         if self.name not in tables:
             s+= '-- '
         
-        s += 'INSERT IGNORE INTO `{db_name}`.`{name}` ('.format(db_name=db_name, name=self.name)
+        s += 'INSERT INTO {db_name}.{name} ('.format(db_name=db_name, name=self.name)
         
         for column_name in columns_name:
-            s+='`{column_name}`, '.format(column_name=column_name)
+            s+='"{column_name}", '.format(column_name=column_name)
         
         s = s[:-2] + ') VALUES ( '
         
@@ -554,13 +540,13 @@ class Table:
         # swimstyle
         
         if self.name in ['athlete', 'club', 'pool', 'meet', 'session', 'event', 'result', 'split', 'swimstyle']:
-            s = 'CREATE TABLE `{db_name}`.`{name}` ('.format(db_name = self.db_name, name=self.name)
+            s = 'CREATE TABLE {db_name}.{name} ('.format(db_name = self.db_name, name=self.name)
         else:
-            s = '-- CREATE TABLE `{db_name}`.`{name}` ('.format(db_name = self.db_name, name=self.name)
+            s = '-- CREATE TABLE {db_name}.{name} ('.format(db_name = self.db_name, name=self.name)
             
         for column in self.columns:
             s += str(self.columns[column])+', '
-        s += '`{primary_key}` INT NOT NULL,PRIMARY KEY (`{primary_key2}`));\n'.format(primary_key=self.name+ 'id', primary_key2=self.name+ 'id')
+        s += '"{primary_key}" INT NOT NULL,PRIMARY KEY ("{primary_key2}"));\n'.format(primary_key=self.name+ 'id', primary_key2=self.name+ 'id')
         return s
     
 class Column:
@@ -588,7 +574,7 @@ class Column:
             self.type = 'INT'
             
     def __str__(self):
-        return '`{column_name}` {column_type}'.format(column_name=self.name, column_type=self.type)
+        return '"{column_name}" {column_type}'.format(column_name=self.name, column_type=self.type)
     
 class ColumnForeignKey(Column):
     def __init__(self, name, db_name, table_name):
@@ -609,10 +595,10 @@ class ColumnForeignKey(Column):
         if self.table_name not in tables or reference_table not in tables:
             s += '-- '
             
-        s += ' ALTER TABLE `{db_name}`.`{table_name}`'.format(db_name=self.db_name, table_name=self.table_name)
-        s += ' ADD CONSTRAINT `{contraint}`'.format(contraint=contraint)
-        s += ' FOREIGN KEY (`{name}`) REFERENCES `{db_name}`.`{reference_table}`'.format(name=self.name, db_name=self.db_name, reference_table=reference_table)        
-        s += ' (`{name}`) ON DELETE NO ACTION ON UPDATE NO ACTION;\n'.format(name=self.name)
+        s += ' ALTER TABLE {db_name}.{table_name}'.format(db_name=self.db_name, table_name=self.table_name)
+        s += ' ADD CONSTRAINT {contraint}'.format(contraint=contraint)
+        s += ' FOREIGN KEY ({name}) REFERENCES {db_name}.{reference_table}'.format(name=self.name, db_name=self.db_name, reference_table=reference_table)        
+        s += ' ({name}) ON DELETE NO ACTION ON UPDATE NO ACTION;\n'.format(name=self.name)
         
         return s
 
