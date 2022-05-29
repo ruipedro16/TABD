@@ -275,35 +275,25 @@ def create_annp_final_inputs(data, id_key):
                 })
 
 
-                ## RANKINGS
+                ## RANKINGS NOT WORKING
 
-                if 'RANKINGS' not in agegroup:
-                    continue
-                if 'RANKING' not in agegroup['RANKINGS']:
-                    continue
+                #if 'RANKINGS' not in agegroup:
+                #    continue
+                #if 'RANKING' not in agegroup['RANKINGS']:
+                #    continue
 
-                for ranking in agegroup['RANKINGS']['RANKING']:
-                    print("here")
-                    
-                    rankingid = str(id_key) + "-" + agegroupid
+                #for ranking in agegroup['RANKINGS']['RANKING']:
+                #    print("here")
+                #    
+                #    rankingid = str(id_key) + "-" + agegroupid
 
-                    rankings.append({
-                        'rankingid': rankingid,
-                        'place': ranking['@place'],
-                        'order': ranking['@order'],
-                        'agegroupid': agegroupid,
-                        'resultid': ranking['@resultid']
-                    })
-
-                    agegroupid = str(id_key) + "-" + str(agegroup['@agegroupid'])
-                    print(agegroup['@agemax'])
-
-                    agegroups.append({
-                        'agegroupid': agegroupid,
-                        'agemax': agegroup['@agemax'],
-                        'agemin': agegroup['@agemin'],
-                        'eventid': eventid,
-                    })
+                #    rankings.append({
+                #        'rankingid': rankingid,
+                #        'place': ranking['@place'],
+                #        'order': ranking['@order'],
+                #        'agegroupid': agegroupid,
+                #        'resultid': ranking['@resultid']
+                #    })
 
 
     sql = ''
