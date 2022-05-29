@@ -136,6 +136,7 @@ def create_annp_final_inputs(data, id_key):
             })
             # license will be the athleteid + the meetid
             license = athleteid + "-" + str(id_key)
+
             # ENROLLS
             enrolls.append({
                 'meetid': data['@meetid'],
@@ -224,7 +225,7 @@ def create_annp_final_inputs(data, id_key):
         for idx, athlete in enumerate(club['ATHLETES']['ATHLETE']):
 
             athleteid = str(athlete['@firstname']) + "-" + str(athlete['@lastname']) + "_" + str(athlete['@birthdate'])
-            license = athleteid + str(id_key)
+            license = athleteid +  "-" + str(id_key)
 
 
 
