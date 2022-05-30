@@ -55,10 +55,10 @@ December\fi, \number \year}
 \begin{abstract}
 This report describes the practical assignment of the Advanced Topics in Databases course. 
 
-This practical assignment consists in creating a data warehouse and conducting data analysis on it, as well as creating graphical reports using the Python library \texttt{matplotlib}.
+This practical assignment consists in creating a data warehouse and conducting data analysis on it, as well as creating
+graphical reports using the Python library \texttt{matplotlib}.
 
-In this report, we briefly describe our approach to the problem and discuss the decisions
-we made.
+In this report, we briefly describe our approach to the problem and discuss the decisions we made.
 \end{abstract}
 
 \pagebreak
@@ -70,79 +70,24 @@ we made.
 
 \section{Introduction}
 
-The data warehouse contains data from national swimming competitions at the master level (\textit{i.e.} class of competitive swimming for swimmers 25 years and older), namely Troféu Pescada 2021 and the Summer 2021 Championship.
+The data warehouse contains data from national swimming competitions at the master level (\textit{i.e.} class of
+competitive swimming for swimmers 25 years and older), namely Troféu Pescada 2021 and the Summer 2021 Championship.
 
 \subsection*{Structure of the Report}
 
 The remainder of the report is structured as follows:
 
 \begin{itemize}
-    \item In \cref{sec:analysis}, \textbf{\nameref{sec:analysis}}, we provide some insight into the data 
-    \item Finally, \cref{sec:conclusion}, \textbf{\nameref{sec:conclusion}}, concludes the report and suggests remarks for future work.
+    \item In \cref{sec:analysis},~\textbf{\nameref{sec:analysis}}, we provide some insight into the data
+    \item Finally, \cref{sec:conclusion},~\textbf{\nameref{sec:conclusion}}, concludes the report and suggests remarks
+    for future work.
 \end{itemize}
 
 \pagebreak
 
 \section{Data Model} \label{sec:data-model}
 
-In the following section, we describe the data contained in the data warehouse.
-
-\subsection{Troféu Pescada}
-
-\subsubsection*{Constructor}
-
-\begin{itemize}
-    \item name
-    \item registration
-    \item version
-    \item contact
-    \begin{itemize}
-        \item name
-        \item street
-        \item city
-        \item zip
-        \item country
-        \item email
-        \item internet (website)
-    \end{itemize}
-\end{itemize}
-
-\subsubsection*{Meet}
-
-\begin{itemize}
-    \item city
-    \item name
-    \item name.en
-    \item course
-    \item deadline
-    \item entrystartdate
-    \item entrytype
-    \item organizer
-    \item result.url
-    \item startmethod
-    \item timing
-    \item type
-    \item withdrawuntil
-    \item nation
-    \item maxentriesathlete
-    \item AGEDATE
-    \begin{itemize}
-        \item value
-        \item type
-    \end{itemize}
-    \item 
-    \item 
-    \item 
-    \item 
-    \item 
-    \item 
-    
-\end{itemize}
-
-\subsubsection*{Pool}
-
-
-\subsection{Summer Championship}
+In this section, we describe the data contained in the data warehouse.
 
 \pagebreak
 
