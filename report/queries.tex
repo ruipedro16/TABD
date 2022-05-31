@@ -1,6 +1,47 @@
 \subsection{Number of Athletes by Age}\label{subsec:number-of-athletes-by-age}
 
-To determine the number of athletes by age, we can run the following SQL query using the PostgrSQL's built-in
+To determine to determine the average age of the athletes, we can run the following SQL query:
+
+\begin{minted}{sql}
+SELECT AVG(age(birthdate))
+FROM annp_final.athlete
+\end{minted}
+
+From this, we can see that the average age of the athletes is 46 years, 6 months and 31 days.
+
+We can also determine who's the youngest athlete by running the following SQL query:
+
+\begin{minted}{sql}
+SELECT *
+FROM annp_final.athlete
+ORDER BY age(birthdate) ASC
+LIMIT 1;
+\end{minted}
+
+\begin{itemize}
+    \item \textbf{Name:} Ana Mónica Eloi
+    \item \textbf{Gender:} F
+    \item \textbf{Birthdate:} 29/12/1996
+    \item \textbf{Age:} 25 years
+\end{itemize}
+
+On the other hand, we can learn information about the oldest athlete by running the following SQL query:
+
+\begin{minted}{sql}
+SELECT *
+FROM annp_final.athlete
+ORDER BY age(birthdate) DESC
+LIMIT 1;
+\end{minted}
+
+\begin{itemize}
+    \item \textbf{Name:} Virgílio Zacarias Costa
+    \item \textbf{Gender:} M
+    \item \textbf{Birthdate:} 21/07/1931
+    \item \textbf{Age:} 90 years
+\end{itemize}
+
+Finally, to determine the number of athletes by age, we can run the following SQL query using the PostgreSQL's built-in
 \texttt{age} function:
 
 \begin{minted}{sql}
@@ -62,9 +103,18 @@ We can then plot the result, as illustrated in \cref{fig:athletesbygender}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.4\textwidth]{img/athletesbygender}
+    \includegraphics[width=.35\textwidth]{img/athletesbygender}
     \caption{Number of athletes by gender}
     \label{fig:athletesbygender}
+\end{figure}
+
+We can also plot this in a pie chart, as illustrated in \cref{fig:athletesbygender-pie}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.45\textwidth]{img/athletesbygender-pie}
+    \caption{Percentage of athletes by gender}
+    \label{fig:athletesbygender-pie}
 \end{figure}
 
 \subsection{Number of Events by Gender}\label{subsec:number-of-events-by-gender}
@@ -81,9 +131,19 @@ We can then plot the result, as illustrated in \cref{fig:eventsbygender}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.4\textwidth]{img/eventsbygender}
+    \includegraphics[width=.35\textwidth]{img/eventsbygender}
     \caption{Number of events by gender}
     \label{fig:eventsbygender}
 \end{figure}
 
 Here, the value \texttt{X} refers to events that allow athletes from both genders to participate.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.45\textwidth]{img/eventsbygender-pie}
+    \caption{Percentage of events by gender}
+    \label{fig:eventsbygender-pie}
+\end{figure}
+
+
+We can also plot this in a pie chart, as illustrated in \cref{fig:eventssbygender-pie}.

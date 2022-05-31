@@ -4,11 +4,7 @@
 
 cp ../plots/* img
 
-if [ "$1" = "-s" ]; then
-  pdflatex -shell-escape report.tex > /dev/null 2>&1
-  pdflatex -shell-escape report.tex > /dev/null 2>&1
-  rm -f report.aux report.lof report.log report.out report.toc texput.log
-else
-  pdflatex -shell-escape report.tex
-  pdflatex -shell-escape report.tex
-fi
+pdflatex -shell-escape report.tex
+pdflatex -shell-escape report.tex
+
+rm -f report.aux report.lof report.log report.out report.toc texput.log
