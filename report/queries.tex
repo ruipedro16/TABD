@@ -137,6 +137,7 @@ We can then plot the result, as illustrated in \cref{fig:eventsbygender}.
 \end{figure}
 
 Here, the value \texttt{X} refers to events that allow athletes from both genders to participate.
+We can also plot this in a pie chart, as illustrated in \cref{fig:eventsbygender-pie}.
 
 \begin{figure}[H]
     \centering
@@ -145,5 +146,52 @@ Here, the value \texttt{X} refers to events that allow athletes from both gender
     \label{fig:eventsbygender-pie}
 \end{figure}
 
+\subsection{Number of Clubs by Nation}\label{subsec:number-of-clubs-by-nation}
 
-We can also plot this in a pie chart, as illustrated in \cref{fig:eventssbygender-pie}.
+We can determine the number of clubs by each nation by running the following SQL query:
+
+\begin{minted}{sql}
+SELECT nation, COUNT(*) AS nationCount
+FROM annp_final.club
+GROUP BY nation
+ORDER BY nationCount ASC;
+\end{minted}
+
+\textcolor{red}{COMPLETAR COM TEXTO}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.35\textwidth]{img/clubsbynation}
+    \caption{Number of clubs by nation}
+    \label{fig:clubs-by-nation}
+\end{figure}
+
+\textcolor{red}{COMPLETAR COM TEXTO}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.45\textwidth]{img/clubsbynation-pie}
+    \caption{Percentage of clubs by nation}
+    \label{fig:clubs-by-nation-pie}
+\end{figure}
+
+\subsection{Number of Clubs by Region}\label{subsec:number-of-clubs-by-region}
+
+\textcolor{red}{COMPLETAR COM TEXTO}.
+
+\begin{minted}{sql}
+SELECT region, COUNT(*) AS regionCount
+FROM annp_final.club
+WHERE region SIMILAR TO '[A-Z]+'
+GROUP BY region
+ORDER BY regionCount ASC;
+\end{minted}
+
+\textcolor{red}{COMPLETAR COM TEXTO}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.85\textwidth]{img/clubsbyregion}
+    \caption{Number of clubs by region}
+    \label{fig:clubs-by-region}
+\end{figure}

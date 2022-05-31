@@ -19,6 +19,9 @@ Tópicos A vançados em Bases de Dados
 
 ## Tabela Club
 
+- [X] Nº de clubes por pais
+- [X] Nº de clubes por regiao
+
 ## To Do 
 
 - [ ] Corrigir o pie chart de athletes by gender
