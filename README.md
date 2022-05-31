@@ -2,6 +2,5 @@
 
 Tópicos Avançados em Bases de Dados
 
-- [ ] Modeling
-- [ ] Analysis 
-- [ ] Slides
+
+- [ ] Corrigir o pie chart de athletes by gender
