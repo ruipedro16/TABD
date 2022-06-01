@@ -4,7 +4,7 @@ To determine to determine the average age of the athletes, we can run the follow
 
 \begin{minted}{sql}
 SELECT AVG(age(birthdate))
-FROM annp_final.athlete
+FROM annp_final.athlete;
 \end{minted}
 
 From this, we can see that the average age of the athletes is 46 years, 6 months and 31 days.
@@ -195,3 +195,42 @@ ORDER BY regionCount ASC;
     \caption{Number of clubs by region}
     \label{fig:clubs-by-region}
 \end{figure}
+
+\subsection{Swim Styles}
+
+\textcolor{red}{COMPLETAR COM TEXTO (style com mais distance) É FRESSTYLE}.
+
+\begin{minted}{sql}
+SELECT *
+FROM annp_final.swimstyle
+ORDER BY distance DESC
+LIMIT 1;
+\end{minted}
+
+\textcolor{red}{COMPLETAR COM TEXTO (style com menos distance) FLY}.
+
+\begin{minted}{sql}
+SELECT *
+FROM annp_final.swimstyle
+ORDER BY distance ASC
+LIMIT 1;
+\end{minted}
+
+\subsection{Results}
+
+\subsubsection{Average Swim Time}
+
+\textcolor{red}{COMPLETAR COM TEXTO (resultado = 00:02:23.769068)}.
+
+\begin{minted}{sql}
+SELECT AVG(swimtime)
+FROM annp_final.result;
+\end{minted}
+
+\subsubsection{Average Number of Points}
+
+\textcolor{red}{COMPLETAR COM TEXTO (resultado = 340)}.
+\begin{minted}{sql}
+SELECT AVG(points)::numeric(10, 1)
+FROM annp_final.result;
+\end{minted}
