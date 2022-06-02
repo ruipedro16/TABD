@@ -1,0 +1,2 @@
+SELECT AVG(points)::numeric(10, 1)
+FROM annp_final.result;
