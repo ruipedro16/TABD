@@ -167,7 +167,7 @@ GROUP BY nation
 ORDER BY nationCount ASC;
 \end{minted}
 
-\textcolor{red}{COMPLETAR COM TEXTO}.
+Plotting the result in a bar chart, we have the following:
 
 \begin{figure}[H]
     \centering
@@ -187,7 +187,7 @@ ORDER BY nationCount ASC;
 
 \subsection{Number of Clubs by Region}\label{subsec:number-of-clubs-by-region}
 
-\textcolor{red}{COMPLETAR COM TEXTO}.
+To determine the number of clubs per each region in Portugal, we can run the following SQL query:
 
 \begin{minted}{sql}
 SELECT region, COUNT(*) AS regionCount
@@ -197,7 +197,7 @@ GROUP BY region
 ORDER BY regionCount ASC;
 \end{minted}
 
-\textcolor{red}{COMPLETAR COM TEXTO}.
+Plotting the result of the query in a bar plot, we have the following:
 
 \begin{figure}[H]
     \centering
@@ -206,7 +206,8 @@ ORDER BY regionCount ASC;
     \label{fig:clubs-by-region-pt}
 \end{figure}
 
-This query only considers the portuguese clubs, because each is identified by uppercase letters only.
+Here, it is worth noting that this query only considers the portuguese clubs, because each is identified by uppercase
+letters only.
 Spanish regions, on the other hand, are identified with numbers, which means that if we want to run the previous query
 considering only spanish regions, we only have to replace \texttt{WHERE region SIMILAR TO '[A-Z]+'} with
 \texttt{WHERE region SIMILAR TO '[0-9]+'}, as shown bellow:
@@ -239,7 +240,28 @@ We can also plot this a pie chart, which gives us the following:
     \label{fig:clubs-by-region-es-pie}
 \end{figure}
 
-\subsection{Swim Styles}
+\subsection{Events by time}
+
+To find out the most frequent time for swimming events (\textit{i.e.} the time at which most of the events take place),
+we can run the following SQL query:
+
+\begin{minted}{sql}
+SELECT time, COUNT(*) AS eventCount
+FROM annp_final.event
+GROUP BY time
+ORDER BY eventCount ASC;
+\end{minted}
+
+Plotting the result in a bar plot, we have the following:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.5\textwidth]{img/eventsbytime}
+    \caption{Number of events by time}
+    \label{fig:events-by-time}
+\end{figure}
+
+\subsubsection{Swimming styles}
 
 \textcolor{red}{COMPLETAR COM TEXTO (style com mais distance) É FRESSTYLE}.
 
@@ -263,17 +285,23 @@ LIMIT 1;
 
 \subsubsection{Average Swim Time}
 
-\textcolor{red}{COMPLETAR COM TEXTO (resultado = 00:02:23.769068)}.
+To determine the average swim time, we just have to run the following SQL query:
 
 \begin{minted}{sql}
 SELECT AVG(swimtime)
 FROM annp_final.result;
 \end{minted}
 
+Running this, we can see that the average swimming time is \texttt{00:02:23.769068}.
+
 \subsubsection{Average Number of Points}
 
-\textcolor{red}{COMPLETAR COM TEXTO (resultado = 340)}.
+To determine the average number of points than an athlete gets in an event, we just have to run the following SQL
+query:
+
 \begin{minted}{sql}
 SELECT AVG(points)::numeric(10, 1)
 FROM annp_final.result;
 \end{minted}
+
+Running this, we can see that the average number of points that an athlete gets in an event is \texttt{340}.

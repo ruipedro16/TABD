@@ -29,133 +29,139 @@
 
 \begin{document}
 
-\renewcommand\labelitemi{--}
-\renewcommand{\today}{\ifcase \month\or January\or February\or March\or %
-April\or May\or June\or July\or August\or September\or October\or November\or %
-December\fi, \number \year}
+    \renewcommand\labelitemi{--}
+    \renewcommand{\today}{\ifcase \month\or January\or February\or March\or %
+    April\or May\or June\or July\or August\or September\or October\or November\or %
+    December\fi, \number \year}
 
-\begin{titlepage}
-    \begin{center}
-        \begin{minipage}{.75\linewidth}
-            \centering
-            \includegraphics[width=0.5\textwidth]{img/fcup}\par\vspace{1cm}
-            \vspace{1.5cm}
-            {\scshape\LARGE Faculty of Sciences of the University of Porto} \par
-            \vspace{1cm}
-            {\scshape\Large Department of Computer Science} \par
-            \vspace{1.5cm}
-            \maketitle
-        \end{minipage}
-    \end{center}
-    \vspace{2cm}
-    \thispagestyle{empty}
+    \begin{titlepage}
+        \begin{center}
+            \begin{minipage}{.75\linewidth}
+                \centering
+                \includegraphics[width=0.5\textwidth]{img/fcup}\par\vspace{1cm}
+                \vspace{1.5cm}
+                {\scshape\LARGE Faculty of Sciences of the University of Porto} \par
+                \vspace{1cm}
+                {\scshape\Large Department of Computer Science} \par
+                \vspace{1.5cm}
+                \maketitle
+            \end{minipage}
+        \end{center}
+        \vspace{2cm}
+        \thispagestyle{empty}
+        \pagebreak
+    \end{titlepage}
+
     \pagebreak
-\end{titlepage}
 
-\pagebreak
+    \pagenumbering{roman}
 
-\pagenumbering{roman}
+    \begin{abstract}
+        This report describes the practical assignment of the Advanced Topics in Databases course.
 
-\begin{abstract}
-This report describes the practical assignment of the Advanced Topics in Databases course. 
+        This practical assignment consists in creating a data warehouse and conducting data analysis on it, as well as creating
+        graphical reports using the Python library \texttt{matplotlib}.
 
-This practical assignment consists in creating a data warehouse and conducting data analysis on it, as well as creating
-graphical reports using the Python library \texttt{matplotlib}.
+        In this report, we briefly describe our approach to the problem and discuss the decisions we made.
+    \end{abstract}
 
-In this report, we briefly describe our approach to the problem and discuss the decisions we made.
-\end{abstract}
+    \pagebreak
 
-\pagebreak
+    \tableofcontents \pagebreak
+    \listoffigures \pagebreak
 
-\tableofcontents \pagebreak
-\listoffigures \pagebreak
-
-\pagenumbering{arabic}
-
-\section{Introduction}\label{sec:introduction}
-
-The data warehouse contains data from national swimming competitions at the master level (\textit{i.e.} class of
-competitive swimming for swimmers 25 years and older), namely Troféu Pescada 2021 and the Summer 2021 Championship.
-
-\subsection*{Structure of the Report}
-
-The remainder of the report is structured as follows:
-
-\begin{itemize}
-    \item In \cref{sec:analysis},~\textbf{\nameref{sec:analysis}}, we provide some insight into the data
-    \item Finally, \cref{sec:conclusion},~\textbf{\nameref{sec:conclusion}}, concludes the report and suggests remarks
-    for future work.
-\end{itemize}
-
-\pagebreak
-
-\section{Data Model} \label{sec:data-model}
-
-In this section, we describe the data tables contained in the data warehouse. 
-
-Some modifications were made in the original script.
-This was mainly motivated due to the fact that same athletes and clubs had different \texttt{ids} for different meets,
-when in our perspective they should be uniquely identified across tournaments.
-They were defined as:
-
-\begin{itemize}
-    \item \texttt{athleteid} = \texttt{firstname} + \texttt{lastname} + \texttt{birthdate} + \texttt{inc\_id}, where the
-    \texttt{inc\_id} increments when two athletes share the same first and last name and the birthdate;
-    \item \texttt{clubid} = \texttt{code} + \texttt{nation} + \texttt{region};
-    \item \texttt{resultid} = \texttt{meetid} + \texttt{resultid};
-    \item \texttt{swimstyleid} = \texttt{distance} + \texttt{relaycount} + \texttt{stroke};
-    \item \texttt{eventid} = \texttt{meetid} + \texttt{eventid};
-    \item The \texttt{license}, which originally was \texttt{meetid} + \texttt{clubid} + \texttt{idx} was replaced by
-    \texttt{athleteid} + \texttt{meetid} because the same athlete could have changed between teams for different
-    tournaments.
-\end{itemize}
-
-Regarding our data model, we built two fact tables, one that gathers information regarding a club in a tournament, while
-another gathered information of a given athlete in a tournament.
-Our schema is depicted in \cref{fig:defact}.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{img/datawarehouse.png}
-    \caption{Datawarehouse schema}
-    \label{fig:defact}
-\end{figure}
+    \pagenumbering{arabic}
 
 
-This Figure shows two fact tables, one related to overall statistics of a team in a tournament, while the other
-ontaining the overall statistics of an athlete.
-Regarding the first table, \textit{Club de factos}, we grouped our data by \texttt{clubid} and \texttt{meetid} to extract
-the following statistics:
+    \section{Introduction}\label{sec:introduction}
 
-\begin{itemize}
-    \item \texttt{number\_of\_players} - the number of players;
-    \item \texttt{average\_age} - the average age of players;
-    \item \texttt{total\_points} - the total points a given team had in a tournament;
-    \item \texttt{total\_distance} - the total distance all the players swam in a team;
-    \item \texttt{average\_swimtime} - the average swimtime all the players swam.
-\end{itemize}
+    The data warehouse contains data from national swimming competitions at the master level (\textit{i.e.} class of
+    competitive swimming for swimmers 25 years and older), namely Troféu Pescada 2021 and the Summer 2021 Championship.
 
-all these statistics, again, grouped by \textit{club} and \textit{tournament}
+    \subsection*{Structure of the Report}
 
-Regarding the second fact table, \textit{Athletes de factos}, we grouped our data by \texttt{athleteid}, \texttt{meetid},
-\texttt{resultid} and \texttt{from\_club} in order to extract the following statistics:
+    The remainder of the report is structured as follows:
 
-\begin{itemize}
-    \item \texttt{average\_swimtime} -- The average swimtime a given athlete swam
-    \item \texttt{total\_points} -- The total points an athlete had
-    \item \texttt{total\_distance} -- The total distance an athlete swam
-\end{itemize}
+    \begin{itemize}
+        \item In \cref{sec:analysis},~\textbf{\nameref{sec:analysis}}, we provide some insight into the data
+        \item Finally, \cref{sec:conclusion},~\textbf{\nameref{sec:conclusion}}, concludes the report and suggests remarks
+        for future work.
+    \end{itemize}
 
-for a given tournament.
+    \pagebreak
 
-\pagebreak
 
-\section{Data Analysis \& Visualization} \label{sec:analysis}
-\input{queries.tex}
+    \section{Data Model} \label{sec:data-model}
 
-\pagebreak
+    In this section, we describe the data tables contained in the data warehouse.
 
-\section{Conclusions \& Future Work} \label{sec:conclusion}
+    Some modifications were made in the original script.
+    This was mainly motivated due to the fact that same athletes and clubs had different \texttt{ids} for different meets,
+    when in our perspective they should be uniquely identified across tournaments.
+    They were defined as:
 
+    \begin{itemize}
+        \item \texttt{athleteid} = \texttt{firstname} + \texttt{lastname} + \texttt{birthdate} + \texttt{inc\_id}, where the
+        \texttt{inc\_id} increments when two athletes share the same first and last name and the birthdate;
+        \item \texttt{clubid} = \texttt{code} + \texttt{nation} + \texttt{region};
+        \item \texttt{resultid} = \texttt{meetid} + \texttt{resultid};
+        \item \texttt{swimstyleid} = \texttt{distance} + \texttt{relaycount} + \texttt{stroke};
+        \item \texttt{eventid} = \texttt{meetid} + \texttt{eventid};
+        \item The \texttt{license}, which originally was \texttt{meetid} + \texttt{clubid} + \texttt{idx} was replaced by
+        \texttt{athleteid} + \texttt{meetid} because the same athlete could have changed between teams for different
+        tournaments.
+    \end{itemize}
+
+    Regarding our data model, we built two fact tables, one that gathers information regarding a club in a tournament, while
+    another gathered information of a given athlete in a tournament.
+    Our schema is illustrated in \cref{fig:defact}.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth]{img/datawarehouse}
+        \caption{Datawarehouse schema}
+        \label{fig:defact}
+    \end{figure}
+
+
+    This figure shows two fact tables, one related to overall statistics of a team in a tournament, while the other
+    ontaining the overall statistics of an athlete.
+    Regarding the first table, \textit{Club de factos}, we grouped our data by \texttt{clubid} and \texttt{meetid} to extract
+    the following statistics:
+
+    \begin{itemize}
+        \item \texttt{number\_of\_players} - the number of players;
+        \item \texttt{average\_age} - the average age of players;
+        \item \texttt{total\_points} - the total points a given team had in a tournament;
+        \item \texttt{total\_distance} - the total distance all the players swam in a team;
+        \item \texttt{average\_swimtime} - the average swimtime all the players swam.
+    \end{itemize}
+
+    all these statistics, again, grouped by \textit{club} and \textit{tournament}
+
+    Regarding the second fact table, \textit{Athletes de factos}, we grouped our data by \texttt{athleteid}, \texttt{meetid},
+    \texttt{resultid} and \texttt{from\_club} in order to extract the following statistics:
+
+    \begin{itemize}
+        \item \texttt{average\_swimtime} -- The average swimtime a given athlete swam
+        \item \texttt{total\_points} -- The total points an athlete had
+        \item \texttt{total\_distance} -- The total distance an athlete swam
+    \end{itemize}
+
+    for a given tournament.
+
+    \pagebreak
+
+
+    \section{Data Analysis \& Visualization} \label{sec:analysis}
+    \input{queries.tex}
+
+    \pagebreak
+
+
+    \section{Conclusions \& Future Work} \label{sec:conclusion}
+
+    As future work, it would be important to include information about other tournaments in the database.
+    To do this, we would only have to pre-process the data to ensure it conforms to the database schema. % Rever esta frase
 
 \end{document}
