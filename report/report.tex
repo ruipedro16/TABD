@@ -14,6 +14,7 @@
 \usepackage[normalem]{ulem}
 \usepackage{setspace}
 \usepackage{color}
+\usepackage{textcomp}
 
 \onehalfspacing
 
@@ -92,34 +93,43 @@ The remainder of the report is structured as follows:
 
 In this section, we describe the data tables contained in the data warehouse. 
 
-Some modifications were made in the original script. This was mainly motivated due to the fact that same athletes and clubs had different \texttt{ids} for different meets, when in our perspective they should be uniquely identified across tournaments. They were defined as: 
+Some modifications were made in the original script.
+This was mainly motivated due to the fact that same athletes and clubs had different \texttt{ids} for different meets,
+when in our perspective they should be uniquely identified across tournaments.
+They were defined as:
 
 \begin{itemize}
-    \item \texttt{athleteid} = \texttt{firstname} + \texttt{lastname} + \texttt{birthdate} + \texttt{inc\_id}, where the \texttt{inc\_id} increments when two athletes share the same first and last name and the birthdate;
+    \item \texttt{athleteid} = \texttt{firstname} + \texttt{lastname} + \texttt{birthdate} + \texttt{inc\_id}, where the
+    \texttt{inc\_id} increments when two athletes share the same first and last name and the birthdate;
     \item \texttt{clubid} = \texttt{code} + \texttt{nation} + \texttt{region};
     \item \texttt{resultid} = \texttt{meetid} + \texttt{resultid};
     \item \texttt{swimstyleid} = \texttt{distance} + \texttt{relaycount} + \texttt{stroke};
     \item \texttt{eventid} = \texttt{meetid} + \texttt{eventid};
-    \item The \texttt{license}, which originally was \texttt{meetid} + \texttt{clubid} + \texttt{idx} was replaced by \texttt{athleteid} + \texttt{meetid} because the same athlete could have changed between teams for different tournaments.
+    \item The \texttt{license}, which originally was \texttt{meetid} + \texttt{clubid} + \texttt{idx} was replaced by
+    \texttt{athleteid} + \texttt{meetid} because the same athlete could have changed between teams for different
+    tournaments.
 \end{itemize}
 
-Regarding our data model, we built two fact tables, one that gathers information regarding a club in a tournament, while another gathered information of a given athlete in a tournament. Our schema is depicted in \cref{fig:defact}. 
+Regarding our data model, we built two fact tables, one that gathers information regarding a club in a tournament, while
+another gathered information of a given athlete in a tournament.
+Our schema is depicted in \cref{fig:defact}.
 
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{report/img/datawarehouse.png}
-    \caption{Datawarehouse schema.}
+    \includegraphics[width=\textwidth]{img/datawarehouse.png}
+    \caption{Datawarehouse schema}
     \label{fig:defact}
 \end{figure}
 
 
-This Figure shows two fact tables, one related to overall statistics of a team in a tournament, while the other containing the overall statistics of an athlete. Regarding the first table, \textit{Club de factos}, we grouped our data by \texttt{clubid} and \texttt{meetid} to extract the following statistics:
+This Figure shows two fact tables, one related to overall statistics of a team in a tournament, while the other
+ontaining the overall statistics of an athlete.
+Regarding the first table, \textit{Club de factos}, we grouped our data by \texttt{clubid} and \texttt{meetid} to extract
+the following statistics:
 
 \begin{itemize}
     \item \texttt{number\_of\_players} - the number of players;
-    
     \item \texttt{average\_age} - the average age of players;
-    
     \item \texttt{total\_points} - the total points a given team had in a tournament;
     \item \texttt{total\_distance} - the total distance all the players swam in a team;
     \item \texttt{average\_swimtime} - the average swimtime all the players swam.
@@ -127,12 +137,13 @@ This Figure shows two fact tables, one related to overall statistics of a team i
 
 all these statistics, again, grouped by \textit{club} and \textit{tournament}
 
-Regarding the second fact table, \textit{Athletes de factos}, we grouped our data by \texttt{athleteid}, \texttt{meetid}, \texttt{resultid} and \texttt{from\_club} in order to extract the following statistics:
+Regarding the second fact table, \textit{Athletes de factos}, we grouped our data by \texttt{athleteid}, \texttt{meetid},
+\texttt{resultid} and \texttt{from\_club} in order to extract the following statistics:
 
 \begin{itemize}
-    \item \texttt{average\_swimtime} - The average swimtime a given athlete swam
-    \item \texttt{total\_points} - The total points an athlete had
-    \item \texttt{total\_distance} - The total distance an athlete swam
+    \item \texttt{average\_swimtime} -- The average swimtime a given athlete swam
+    \item \texttt{total\_points} -- The total points an athlete had
+    \item \texttt{total\_distance} -- The total distance an athlete swam
 \end{itemize}
 
 for a given tournament.

@@ -20,7 +20,7 @@ LIMIT 1;
 
 \begin{itemize}
     \item \textbf{Name:} Ana Mónica Eloi
-    \item \textbf{Gender:} F
+    \item \textbf{Gender:} Female
     \item \textbf{Birthdate:} 29/12/1996
     \item \textbf{Age:} 25 years
 \end{itemize}
@@ -36,7 +36,7 @@ LIMIT 1;
 
 \begin{itemize}
     \item \textbf{Name:} Virgílio Zacarias Costa
-    \item \textbf{Gender:} M
+    \item \textbf{Gender:} Male
     \item \textbf{Birthdate:} 21/07/1931
     \item \textbf{Age:} 90 years
 \end{itemize}
@@ -80,13 +80,23 @@ We can then plot the result, as illustrated in \cref{fig:athletesbynation}.
     \label{fig:athletesbynation}
 \end{figure}
 
-To have another perspective, we can also plot in a pie chart, as illustrated in \cref{fig:athletesbynation-pie}.
+We can also consider the gender of each athlete.
+To do so, we can run the following SQL query:
+
+\begin{minted}{sql}
+SELECT nation, COUNT(*) AS nationCount, gender
+FROM annp_final.athlete
+GROUP BY nation, gender
+ORDER BY nationCount ASC;
+\end{minted}
+
+Plotting the result in a bar plot, we have the following:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\textwidth]{img/athletesbynation-piechart}
-    \caption{Number of athletes by nation}
-    \label{fig:athletesbynation-pie}
+    \includegraphics[width=.8\textwidth]{img/athletesbynationgender}
+    \caption{Number of athletes by nation and gender}
+    \label{fig:athletesbynationgender}
 \end{figure}
 
 \subsection{Number of Athletes by Gender}\label{subsec:number-of-athletes-by-gender}
@@ -191,9 +201,42 @@ ORDER BY regionCount ASC;
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.85\textwidth]{img/clubsbyregion}
-    \caption{Number of clubs by region}
-    \label{fig:clubs-by-region}
+    \includegraphics[width=.85\textwidth]{img/clubsbyregion-pt}
+    \caption{Number of clubs by region (PT)}
+    \label{fig:clubs-by-region-pt}
+\end{figure}
+
+This query only considers the portuguese clubs, because each is identified by uppercase letters only.
+Spanish regions, on the other hand, are identified with numbers, which means that if we want to run the previous query
+considering only spanish regions, we only have to replace \texttt{WHERE region SIMILAR TO '[A-Z]+'} with
+\texttt{WHERE region SIMILAR TO '[0-9]+'}, as shown bellow:
+
+\begin{minted}{sql}
+SELECT region, COUNT(*) AS regionCount
+FROM annp_final.club
+WHERE region SIMILAR TO '[0-9]+'
+GROUP BY region
+ORDER BY regionCount ASC;
+\end{minted}
+
+However, this has a downside in the sense that we have no way of knowing which regions these values \texttt{10114} and
+\texttt{11115} refer to.
+Ploting the result in a bar plot, we have the following:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.5\textwidth]{img/clubsbyregion-es}
+    \caption{Number of clubs by region (ES)}
+    \label{fig:clubs-by-region-es}
+\end{figure}
+
+We can also plot this a pie chart, which gives us the following:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.5\textwidth]{img/clubsbyregion-es-pie}
+    \caption{Number of clubs by region (ES)}
+    \label{fig:clubs-by-region-es-pie}
 \end{figure}
 
 \subsection{Swim Styles}
