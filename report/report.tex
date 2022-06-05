@@ -107,27 +107,24 @@ Regarding our data model, we built two fact tables, one that gathers information
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\textwidth]{img/facttables.pdf}
+    \includegraphics[width=\textwidth]{img/datawarehouse.pdf}
     \caption{Datawarehouse schema.}
     \label{fig:defact}
 \end{figure}
 
 
-This Figure shows two fact tables, one related to overall statistics of a team in a tournament, while the other containing the overall statistics of an athlete. Regarding the first table, \textit{Club de factos}, we grouped our data by \texttt{clubid} and \texttt{meetid} to extract the following statistics:
+This Figure shows two fact tables, one related to overall statistics of a team in a tournament, while the other containing the overall statistics of an athlete. 
+Regarding the first table, \textit{Club de factos}, we grouped our data by \texttt{meetid}, \texttt{clubid} and \texttt{swimstyleid} to extract the following statistics:
 
 \begin{itemize}
     \item \texttt{number\_of\_players} - the number of players;
-    
     \item \texttt{average\_age} - the average age of players;
-    
     \item \texttt{total\_points} - the total points a given team had in a tournament;
     \item \texttt{total\_distance} - the total distance all the players swam in a team;
     \item \texttt{average\_swimtime} - the average swimtime all the players swam.
 \end{itemize}
 
-all these statistics, again, grouped by \textit{club} and \textit{tournament}
-
-Regarding the second fact table, \textit{Athletes de factos}, we grouped our data by \texttt{athleteid}, \texttt{meetid}, \texttt{resultid} and \texttt{from\_club} in order to extract the following statistics:
+Regarding the second fact table, \textit{Athletes de factos}, we grouped our data by \texttt{athleteid}, \texttt{meetid} and \texttt{from\_club} in order to extract the following statistics:
 
 \begin{itemize}
     \item \texttt{average\_swimtime} - The average swimtime a given athlete swam
@@ -146,7 +143,5 @@ for a given tournament.
 
 \section{Conclusions \& Future Work} \label{sec:conclusion}
 
-As future work, it would be important to include information about other tournaments in the database.
-To do this, we would have to pre-process the data to ensure it conforms to the database schema.
 
 \end{document}

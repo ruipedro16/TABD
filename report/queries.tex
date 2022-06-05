@@ -20,7 +20,7 @@ LIMIT 1;
 
 \begin{itemize}
     \item \textbf{Name:} Ana Mónica Eloi
-    \item \textbf{Gender:} Female
+    \item \textbf{Gender:} F
     \item \textbf{Birthdate:} 29/12/1996
     \item \textbf{Age:} 25 years
 \end{itemize}
@@ -36,7 +36,7 @@ LIMIT 1;
 
 \begin{itemize}
     \item \textbf{Name:} Virgílio Zacarias Costa
-    \item \textbf{Gender:} Male
+    \item \textbf{Gender:} M
     \item \textbf{Birthdate:} 21/07/1931
     \item \textbf{Age:} 90 years
 \end{itemize}
@@ -78,6 +78,15 @@ We can then plot the result, as illustrated in \cref{fig:athletesbynation}.
     \includegraphics[width=.8\textwidth]{img/athletesbynation}
     \caption{Number of athletes by nation}
     \label{fig:athletesbynation}
+\end{figure}
+
+To have another perspective, we can also plot in a pie chart, as illustrated in \cref{fig:athletesbynation-pie}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.8\textwidth]{img/athletesbynation-piechart}
+    \caption{Number of athletes by nation}
+    \label{fig:athletesbynation-pie}
 \end{figure}
 
 \subsection{Number of Athletes by Gender}\label{subsec:number-of-athletes-by-gender}
@@ -148,7 +157,7 @@ GROUP BY nation
 ORDER BY nationCount ASC;
 \end{minted}
 
-Plotting the result in a bar chart, we have the following:
+\textcolor{red}{COMPLETAR COM TEXTO}.
 
 \begin{figure}[H]
     \centering
@@ -157,9 +166,18 @@ Plotting the result in a bar chart, we have the following:
     \label{fig:clubs-by-nation}
 \end{figure}
 
+\textcolor{red}{COMPLETAR COM TEXTO}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.45\textwidth]{img/clubsbynation-pie}
+    \caption{Percentage of clubs by nation}
+    \label{fig:clubs-by-nation-pie}
+\end{figure}
+
 \subsection{Number of Clubs by Region}\label{subsec:number-of-clubs-by-region}
 
-To determine the number of clubs per each region in Portugal, we can run the following SQL query:
+\textcolor{red}{COMPLETAR COM TEXTO}.
 
 \begin{minted}{sql}
 SELECT region, COUNT(*) AS regionCount
@@ -169,7 +187,7 @@ GROUP BY region
 ORDER BY regionCount ASC;
 \end{minted}
 
-Plotting the result of the query in a bar chart we have the following:
+\textcolor{red}{COMPLETAR COM TEXTO}.
 
 \begin{figure}[H]
     \centering
@@ -178,62 +196,7 @@ Plotting the result of the query in a bar chart we have the following:
     \label{fig:clubs-by-region}
 \end{figure}
 
-Here, it is worth noting that this query only considers the portuguese clubs, because each is identified by uppercase
-letters only.
-Spanish regions, on the other hand, are identified with numbers, which means that if we want to run the previous query
-considering only spanish regions, we only have to replace \texttt{WHERE region SIMILAR TO '[A-Z]+'} with
-\texttt{WHERE region SIMILAR TO '[0-9]+'}, as shown bellow:
-
-\begin{minted}{sql}
-SELECT region, COUNT(*) AS regionCount
-FROM annp_final.club
-WHERE region SIMILAR TO '[0-9]+'
-GROUP BY region
-ORDER BY regionCount ASC;
-\end{minted}
-
-However, this has a downside in the sense that we have no way of knowing which regions these values \texttt{10114} and
-\texttt{11115} refer to.
-Ploting the result in a bar plot, we have the following:
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.5\textwidth]{img/clubsbyregion-es}
-    \caption{Number of clubs by region (ES)}
-    \label{fig:clubs-by-region-es}
-\end{figure}
-
-We can also plot this a pie chart, which gives us the following:
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.5\textwidth]{img/clubsbyregion-es-pie}
-    \caption{Number of clubs by region (ES)}
-    \label{fig:clubs-by-region-es-pie}
-\end{figure}
-
-\subsection{Events by time}
-
-To find out the most frequent time for swimming events (\textit{i.e.} the time at which most of the events take place),
-we can run the following SQL query:
-
-\begin{minted}{sql}
-SELECT time, COUNT(*) AS eventCount
-FROM annp_final.event
-GROUP BY time
-ORDER BY time DESC;
-\end{minted}
-
-Plotting the result in a bar plot, we have the following:
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{img/eventsbytime}
-    \caption{Number of events by time}
-    \label{fig:events-by-time}
-\end{figure}
-
-\subsection{Swimming Styles}
+\subsection{Swim Styles}
 
 \textcolor{red}{COMPLETAR COM TEXTO (style com mais distance) É FRESSTYLE}.
 
@@ -274,6 +237,12 @@ FROM annp_final.result;
 
 \subsection{Club facts statistics}
 
+\subsubsection{Overall Statistics}
+
+Given the Club facts table, we can plot some of their statistics. Below, we present a query that fetches these statistics for all possible combinations
+between \texttt{meetid} and \texttt{clubid}. Note that instead we used the \texttt{code} column from \texttt{club} table to easily read each team for 
+a given tournament. 
+
 \begin{minted}{sql}
 SELECT 
 CASE GROUPING(cd.meetid)
@@ -303,9 +272,43 @@ GROUP BY CUBE (cd.meetid, c.code);
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{img/clubdefactostats.png}
+    \includegraphics[width=\textwidth]{img/club_fact1.pdf}
     \caption{Statistics from fact Club table.}
     \label{fig:clubs_fact}
+\end{figure}
+
+\subsubsection{Statistics given a swimstyle}
+
+Next, we also show the overall statistics given a swim style. For that, we use the query
+
+\begin{minted}{sql}
+SELECT 
+    CASE GROUPING(c.code)
+        WHEN 1 THEN 'all_clubs'
+        ELSE c.code
+    END AS "Team",
+    CASE GROUPING(cd.swimstyleid)
+        WHEN 1 THEN 'all_styles'
+        ELSE cd.swimstyleid
+    END AS "SwimStyle",
+    ROUND(AVG(average_swimtime), 2) AS "Average Swimtime",
+    ROUND(SUM(total_points)) AS "Total Points",
+    ROUND(SUM(number_of_players)) AS "Total Players"
+FROM annp_final.club_defacto cd
+JOIN annp_final.club c on c.clubid = cd.clubid
+GROUP BY CUBE (c.code, cd.swimstyleid)
+ORDER BY "Total Points" DESC
+\end{minted}
+
+To filter the amount of information this table has, we filter, for a given swim style, the top5 teams that had the higher total of points. This is done for all the
+tournaments. This pre-processing step was done in python and the result is depicted in Figure \ref{fig:clubs_fact2}. Note that not all the bar plots have 5 teams. This
+is due to the lack of data presented from both tournaments.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img/stats_clubs_swim.pdf}
+    \caption{Top 5 teams per swim style for a given statistic.}
+    \label{fig:clubs_fact2}
 \end{figure}
 
 \subsection{Athlete facts statistics}
