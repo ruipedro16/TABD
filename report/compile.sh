@@ -7,4 +7,4 @@ cp ../plots/* img
 pdflatex -shell-escape report.tex
 pdflatex -shell-escape report.tex
 
-rm -f report.aux report.fdb_latexmk report.fls report.lof report.log report.out report.toc texput.log
+rm -f report.aux report.fdb_latexmk report.fls report.lof report.log report.out report.toc texput.log report.pyg

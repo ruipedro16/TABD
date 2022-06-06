@@ -1,0 +1,24 @@
+SELECT
+    CASE GROUPING(a.firstname)
+        WHEN 1 THEN 'all_players'
+        ELSE a.firstname
+    END AS "Athletes",
+    CASE GROUPING(af.meetid)
+        WHEN 1 THEN 'all_meets'
+        ELSE af.meetid
+    END AS "Tournament",
+    ROUND(AVG(average_points), 2) AS "Average Points",
+    ROUND(AVG(average_distance), 2) AS "Average Distance",
+    ROUND(AVG(average_swimtime), 2) AS "Average Swimtime"
+FROM (
+    SELECT
+        athleteid,
+        CAST(meetid as VARCHAR(255)),
+        average_points,
+        average_distance,
+        average_swimtime
+    FROM annp_final.athlete_defacto) af
+JOIN annp_final.athlete a ON a.athleteid = af.athleteid
+GROUP BY CUBE (a.firstname, af.meetid)
+ORDER BY "Average Points" DESC
+LIMIT 50;
