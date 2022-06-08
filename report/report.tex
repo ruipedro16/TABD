@@ -217,6 +217,17 @@ We can then plot the result, as illustrated in \cref{fig:athletesbyage}.
 \end{figure}
 
 We can also plot the number of athletes by age based on their gender, as illustrated in \cref{fig:athletesbyageandgender}.
+To do so, we have to run the following SQL query:
+
+\begin{minted}{sql}
+SELECT 
+    EXTRACT(YEAR FROM age(birthdate)) AS age,
+    gender,
+    COUNT(*)
+FROM annp_final.athlete
+GROUP BY (age, gender)
+ORDER BY age ASC;
+\end{minted}
 
 \begin{figure}[H]
     \centering
