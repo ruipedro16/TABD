@@ -4,6 +4,7 @@
 
 mkdir -p img
 cp ../plots/* img
+cp ../report/img/datawarehouse.pdf img
 
 pdflatex -shell-escape slides.tex
 
