@@ -2,8 +2,6 @@
 
 # Install latex with sudo apt-get install -y texlive-full
 
-cp ../plots/* img
-
 pdflatex -shell-escape report.tex
 pdflatex -shell-escape report.tex
 
