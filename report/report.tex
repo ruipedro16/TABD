@@ -73,10 +73,14 @@ In this report, we briefly describe our approach to the problem and discuss the 
 
 \section{Introduction}
 
+The aim of this practical assignment consists in the construction of a datawarehouse and the elaboration of data analysis over it, with the construction of graphical reports using the Python module \texttt{matplotlib}.
+
 The data warehouse contains data from national swimming competitions at the master level (\textit{i.e.} class of
 competitive swimming for swimmers 25 years and older), namely Troféu Pescada 2021 and the Summer 2021 Championship.
 
-\textcolor{red}{COMPLETAR COM TEXTO}
+The data is imported into the datawarehouse after being extracted from files in the Lenex (LXF) format. Some graphical reports will then be generated based on this data.
+
+\vspace{\baselineskip}
 
 \subsection*{Structure of the Report}
 
@@ -127,19 +131,19 @@ information of a given athlete in a tournament. Our schema is illustrated in \cr
 This Figure shows two fact tables, one related to overall statistics of a team in a tournament, while the other containing the overall statistics of an athlete. Regarding the first table, \textit{Club de factos}, we grouped our data by \texttt{meetid}, \texttt{clubid} and \texttt{swimstyleid} to extract the following statistics:
 
 \begin{itemize}
-    \item \texttt{number\_of\_players} - the number of players;
-    \item \texttt{average\_age} - the average age of players;
-    \item \texttt{total\_points} - the total points a given team had in a tournament;
-    \item \texttt{total\_distance} - the total distance all the players swam in a team;
-    \item \texttt{average\_swimtime} - the average swimtime all the players swam.
+    \item \texttt{number\_of\_players} -- The number of players;
+    \item \texttt{average\_age} -- The average age of players;
+    \item \texttt{total\_points} -- The total points a given team had in a tournament;
+    \item \texttt{total\_distance} -- The total distance all the players swam in a team;
+    \item \texttt{average\_swimtime} -- The average swimtime all the players swam.
 \end{itemize}
 
 Regarding the second fact table, \textit{Athletes de factos}, we grouped our data by \texttt{athleteid}, \texttt{meetid} and \texttt{from\_club} in order to extract the following statistics:
 
 \begin{itemize}
-    \item \texttt{average\_swimtime} - The average swimtime a given athlete swam
-    \item \texttt{average\_points} - The average points an athlete had
-    \item \texttt{average\_distance} - The average distance an athlete swam
+    \item \texttt{average\_swimtime} -- The average swimtime a given athlete swam
+    \item \texttt{average\_points} -- The average points an athlete had
+    \item \texttt{average\_distance} -- The average distance an athlete swam
 \end{itemize}
 
 for a given tournament.
@@ -148,7 +152,7 @@ for a given tournament.
 
 \section{Data Analysis \& Visualization} \label{sec:analysis}
 
-In this section, we \textcolor{red}{completar com texto}.
+In this section, we build informative reports that analytically summarize the information stored in the datawarehouse. These reports are also be presented in graphical form when applicable.
 
 \subsection{Athletes by Age}
 
@@ -217,17 +221,6 @@ We can then plot the result, as illustrated in \cref{fig:athletesbyage}.
 \end{figure}
 
 We can also plot the number of athletes by age based on their gender, as illustrated in \cref{fig:athletesbyageandgender}.
-To do so, we have to run the following SQL query:
-
-\begin{minted}{sql}
-SELECT 
-    EXTRACT(YEAR FROM age(birthdate)) AS age,
-    gender,
-    COUNT(*)
-FROM annp_final.athlete
-GROUP BY (age, gender)
-ORDER BY age ASC;
-\end{minted}
 
 \begin{figure}[H]
     \centering
@@ -552,9 +545,12 @@ LIMIT 50;
 
 \section{Conclusions \& Future Work} \label{sec:conclusion}
 
-In this practical assignment, \textcolor{red}{COMPLETAR COM TEXTO} that allowed us to have a better insight into the data.
+In this practical assignment, we were able to model, create and load the
+datawarehouse with the extracted information from files in the Lenex (LXF) format, as well as build informative reports that analytically summarize the information stored in the datawarehouse.
 
 As future work, it would be important to include information about other tournaments in the database.
 To do this, we would have to pre-process the data to ensure it conforms to the database schema.
+
+Finally, it would also be important to explore other SQL operators such as \texttt{GROUP BY ROLLUP}.
 
 \end{document}
