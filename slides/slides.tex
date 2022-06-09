@@ -32,19 +32,10 @@ December\fi, \number \year}
     \item \texttt{clubid} = \texttt{code} + \texttt{nation} + \texttt{region};
     \item \texttt{resultid} = \texttt{meetid} + \texttt{resultid};
     \item \texttt{swimstyleid} = \texttt{distance} + \texttt{relaycount} + \texttt{stroke};
-    \item \texttt{eventid} = \texttt{meetid} + \texttt{eventid};
-    \item The \texttt{license} = \texttt{athleteid} + \texttt{meetid}.
+    \item \texttt{eventid} = \texttt{meetid} + \texttt{eventid}.
 \end{itemize}
     
 \end{block}
-
-\begin{block}{PKs in fact tables:}
-    \begin{itemize}
-        \item \textit{Clubs de factos}, \texttt{pk\_clubfact} = \texttt{clubid} + \texttt{meetid} + \texttt{swimstyleid};
-        \item \textit{Athlete de factos}, \texttt{pk\_athletefact} = \texttt{athleteid} + \texttt{from\_club} + \texttt{meetid}.
-    \end{itemize}
-\end{block}
-
 
 \end{frame}
 
@@ -317,7 +308,7 @@ December\fi, \number \year}
 \begin{frame}{Club Fact statistics}
 
 \begin{figure}
-    \includegraphics[scale=0.2]{img/clubs-stats-all.png}\hspace*{10cm}
+    \includegraphics[scale=0.2]{img/clubstats.png}\hspace*{10cm}
 \end{figure}
 
 \end{frame}
@@ -325,22 +316,27 @@ December\fi, \number \year}
 \begin{frame}[allowframebreaks]{Overall Club Statistics}
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{img/stats/clubfacts1.png}
+    \includegraphics[width=\textwidth]{img/1.png}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{img/stats/clubfacts2.png}
+    \includegraphics[width=\textwidth]{img/2.png}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{img/stats/clubfacts3.png}
+    \includegraphics[width=\textwidth]{img/3.png}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{img/stats/clubfacts4.png}
+    \includegraphics[width=\textwidth]{img/4.png}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{img/5.png}
 \end{figure}
 
 \end{frame}
@@ -348,7 +344,7 @@ December\fi, \number \year}
 \begin{frame}{Swim Style Statistics By Club}
 
 \begin{figure}
-    \includegraphics[scale=0.25]{img/clubs-stats-swim.png}\hspace*{10cm}
+    \includegraphics[scale=0.25]{img/code.png}
 \end{figure}
 
 \end{frame}
@@ -356,33 +352,14 @@ December\fi, \number \year}
 \begin{frame}{Swim Style Statistics}
 \begin{figure}
     \centering
+    \includegraphics[width=\textwidth]{img/stats_athlete_swim.pdf}
+\end{figure}
+
+\begin{figure}
+    \centering
     \includegraphics[width=\textwidth]{img/stats_clubs_swim.pdf}
 \end{figure}
-\end{frame}
 
-
-\begin{frame}{Athlete Fact Statistics}
-\begin{figure}
-    \includegraphics[scale=0.2]{img/athletes-stats.png}\hspace*{10cm}
-\end{figure}
-\end{frame}
-
-
-\begin{frame}[allowframebreaks]{Overall Athlete Statistics}
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{img/stats/ath1.png}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{img/stats/ath2.png}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{img/stats/ath3.png}
-\end{figure}
 \end{frame}
 
 \end{document}
