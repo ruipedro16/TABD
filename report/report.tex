@@ -401,34 +401,43 @@ We can also plot this a pie chart, which gives us the following:
 
 \subsubsection{Overall Statistics}
 
-Given the Club facts table, we can plot some of their statistics. Below, we present a query that fetches these statistics for all possible combinations
-between \texttt{meetid} and \texttt{clubid}. Note that instead we used the \texttt{code} column from \texttt{club} table to easily read each team for 
-a given tournament. 
+
 
 \begin{minted}{sql}
-SELECT 
-CASE GROUPING(cd.meetid)
-    WHEN 1 THEN 'all_meets'
-    ELSE cd.meetid
-END AS "Tournament",
-CASE GROUPING(c.code)
-    WHEN 1 THEN 'all_clubs'
-    ELSE c.code
-END AS "Team",
-   ROUND(AVG(average_age), 0) AS "Average Age",
-   ROUND(AVG(average_swimtime), 2) AS "Average Swimtime",
-   ROUND(SUM(total_points)) AS "Total Points",
-   ROUND(SUM(number_of_players)) AS "Total Players"
+    SELECT
+    CASE GROUPING(af.clubid)
+        WHEN 1 THEN 'all_clubs'
+        ELSE af.clubid
+    END AS "Club",
+    CASE GROUPING(af.meetid)
+        WHEN 1 THEN 'all_meets'
+        ELSE af.meetid
+    END AS "Tournament",
+    ROUND(AVG(points), 2) AS "Average Points",
+    ROUND(AVG(distance), 2) AS "Average Distance",
+    ROUND(AVG(swimtime), 2) AS "Average Swimtime",
+    ROUND(AVG(birthdate)) AS "Average Age",
+    COUNT(af.athleteid) AS "Total Athletes"
 FROM (
-    SELECT CAST(meetid AS VARCHAR(255)),
-       clubid,
-       average_age,
-       total_points,
-       average_swimtime,
-       number_of_players
-    FROM annp_final.club_defacto) cd
-JOIN annp_final.club c ON c.clubid = cd.clubid
-GROUP BY CUBE (cd.meetid, c.code);
+    SELECT
+        CAST(meetid AS VARCHAR(255)),
+        f.athleteid,
+        clubid,
+        points,
+        distance,
+        ROUND(CAST(
+              (EXTRACT(
+                 MICROSECONDS FROM swimtime))/10^6 
+                        AS NUMERIC), 2) AS swimtime,
+        round(EXTRACT(
+            EPOCH FROM 
+                CURRENT_TIMESTAMP - a.birthdate)/(365*24*60*60)) AS birthdate
+    FROM facts f
+    JOIN annp_final.athlete a ON a.athleteid = f.athleteid
+    ) af
+WHERE points IS NOT NULL
+GROUP BY CUBE (af.clubid, af.meetid)
+ORDER BY "Average Points" DESC;
 \end{minted}
 
 \begin{figure}[H]
@@ -438,27 +447,30 @@ GROUP BY CUBE (cd.meetid, c.code);
     \label{fig:clubs_fact}
 \end{figure}
 
-\subsubsection{Statistics for a given Swim Style}
+\subsubsection{Team \& Swim Style Statistics}
 
 Next, we also show the overall statistics given a swim style. For that, we use the following SQL query:
 
 \begin{minted}{sql}
-SELECT 
+SELECT
     CASE GROUPING(c.code)
         WHEN 1 THEN 'all_clubs'
         ELSE c.code
     END AS "Team",
-    CASE GROUPING(cd.swimstyleid)
+    CASE GROUPING(af.swimstyleid)
         WHEN 1 THEN 'all_styles'
-        ELSE cd.swimstyleid
+        ELSE af.swimstyleid
     END AS "SwimStyle",
-    ROUND(AVG(average_swimtime), 2) AS "Average Swimtime",
-    ROUND(SUM(total_points)) AS "Total Points",
-    ROUND(SUM(number_of_players)) AS "Total Players"
-FROM annp_final.club_defacto cd
-JOIN annp_final.club c on c.clubid = cd.clubid
-GROUP BY CUBE (c.code, cd.swimstyleid)
-ORDER BY "Total Points" DESC
+    ROUND(CAST(
+                AVG(EXTRACT(
+                        MICROSECONDS FROM af.swimtime))/10^6 
+                            AS NUMERIC), 2) as "Average Swimtime",
+    round(AVG(af.points), 2) AS "Average Points",
+    COUNT(af.athleteid) AS "Total Athletes"
+    FROM facts af
+    INNER JOIN annp_final.club c ON c.clubid = af.clubid
+    WHERE af.points IS NOT NULL
+    GROUP BY CUBE (af.swimstyleid, c.code)
 \end{minted}
 
 To filter the amount of information this table has, we filter, for a given swim style, the top 5 teams that had the higher total of points. This is done for all the
@@ -472,41 +484,70 @@ is due to the lack of data presented from both tournaments.
     \label{fig:clubs_fact2}
 \end{figure}
 
-\subsection{Athlete Facts Statistics}
+\subsection{Athlete Statistics}
+
+\subsubsection{Athletes that commited fault}
+
+Here, we assume that an athlete commited a fault if it has 0 points in a given swimtime.
 
 \begin{minted}{sql}
+    WITH tmp AS (SELECT 
+	athleteid,
+	CASE 
+		WHEN points IS NULL THEN 'fault' 
+		ELSE 'notfault' 
+	END AS fault
+FROM facts)
 SELECT
+	athleteid,
+	count(tmp.fault) AS "Number of Faults"
+FROM tmp
+WHERE fault = 'fault'
+GROUP BY athleteid
+ORDER BY "Number of Faults" DESC;
+\end{minted}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.55\textwidth]{img/faults.png}
+    \caption{Athletes that commited more faults}
+\end{figure}
+
+\subsection{Athlete \& Swim Style Statistics}
+
+\begin{minted}{sql}
+    SELECT
     CASE GROUPING(a.firstname)
         WHEN 1 THEN 'all_players'
         ELSE a.firstname
     END AS "Athletes",
-    CASE GROUPING(af.meetid)
-        WHEN 1 THEN 'all_meets'
-        ELSE af.meetid
-    END AS "Tournament",
-    ROUND(AVG(average_points), 2) AS "Average Points",
-    ROUND(AVG(average_distance), 2) AS "Average Distance",
-    ROUND(AVG(average_swimtime), 2) AS "Average Swimtime"
+    CASE GROUPING(af.swimstyleid)
+        WHEN 1 THEN 'All SwimStyles'
+        ELSE af.swimstyleid
+    END AS "SwimStyle",
+    ROUND(AVG(points), 2) AS "Average Points",
+    ROUND(AVG(swimtime), 2) AS "Average Swimtime"
 FROM (
     SELECT
         athleteid,
-        CAST(meetid as VARCHAR(255)),
-        average_points,
-        average_distance,
-        average_swimtime
-    FROM annp_final.athlete_defacto) af
+        CAST(swimstyleid as VARCHAR(255)),
+        points,
+        distance,
+        ROUND(CAST(
+      		(EXTRACT(
+         		MICROSECONDS FROM swimtime))/10^6 
+                        AS NUMERIC), 2) AS swimtime
+    FROM facts) af
 JOIN annp_final.athlete a ON a.athleteid = af.athleteid
-GROUP BY CUBE (a.firstname, af.meetid)
-ORDER BY "Average Points" DESC
-LIMIT 50;
+WHERE points IS NOT NULL
+GROUP BY CUBE (a.firstname, af.swimstyleid)
+ORDER BY "Average Points" DESC;
 \end{minted}
-
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{img/athletefact.pdf}
-    \caption{Statistics from fact Club table.}
-    \label{fig:athlete_fact}
+    \includegraphics[width=\textwidth]{img/download.png}
+    \caption{Average points and swim time for a given athlete and a given swim style}
 \end{figure}
 
 \pagebreak
