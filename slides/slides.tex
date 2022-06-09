@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 
+
 \title{Advanced Topics in Databases}
 \subtitle{Practical Assignment}
 
@@ -20,6 +21,31 @@ December\fi, \number \year}
 
 \begin{frame}
     \titlepage
+\end{frame}
+
+\begin{frame}{Database}
+
+\begin{block}{Some changed parameters:}
+
+\begin{itemize}
+    \item \texttt{athleteid} = \texttt{firstname} + \texttt{lastname} + \texttt{birthdate} + \texttt{inc\_id};
+    \item \texttt{clubid} = \texttt{code} + \texttt{nation} + \texttt{region};
+    \item \texttt{resultid} = \texttt{meetid} + \texttt{resultid};
+    \item \texttt{swimstyleid} = \texttt{distance} + \texttt{relaycount} + \texttt{stroke};
+    \item \texttt{eventid} = \texttt{meetid} + \texttt{eventid};
+    \item The \texttt{license} = \texttt{athleteid} + \texttt{meetid}.
+\end{itemize}
+    
+\end{block}
+
+\begin{block}{PKs in fact tables:}
+    \begin{itemize}
+        \item \textit{Clubs de factos}, \texttt{pk\_clubfact} = \texttt{clubid} + \texttt{meetid} + \texttt{swimstyleid};
+        \item \textit{Athlete de factos}, \texttt{pk\_athletefact} = \texttt{athleteid} + \texttt{from\_club} + \texttt{meetid}.
+    \end{itemize}
+\end{block}
+
+
 \end{frame}
 
 \begin{frame}{Database}
@@ -221,28 +247,6 @@ December\fi, \number \year}
 \end{columns}
 \end{frame}
 
-\begin{frame}{Events by Gender}
-\begin{columns}[c]
-% create the column with the first image, that  occupies
-% half of the slide
-\begin{column}{.5\textwidth}
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{img/eventsbygender.png}
-\end{figure}
-\end{column}
-
-% create the column with the second image, that also
-% occupies half of the slide
-\begin{column}{.5\textwidth}
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{img/eventsbygender-pie.png}
-\end{figure}
-\end{column}
-\end{columns}
-\end{frame}
-
 \begin{frame}{Clubs by Nation}
 \begin{columns}[c]
 % create the column with the first image, that  occupies
@@ -307,9 +311,18 @@ December\fi, \number \year}
 \end{figure}
 \end{column}
 \end{columns}
+
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Club Statistics}
+\begin{frame}{Club Fact statistics}
+
+\begin{figure}
+    \includegraphics[scale=0.2]{img/clubs-stats-all.png}\hspace*{10cm}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Overall Club Statistics}
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{img/stats/clubfacts1.png}
@@ -329,6 +342,15 @@ December\fi, \number \year}
     \centering
     \includegraphics[width=\textwidth]{img/stats/clubfacts4.png}
 \end{figure}
+
+\end{frame}
+
+\begin{frame}{Swim Style Statistics By Club}
+
+\begin{figure}
+    \includegraphics[scale=0.25]{img/clubs-stats-swim.png}\hspace*{10cm}
+\end{figure}
+
 \end{frame}
 
 \begin{frame}{Swim Style Statistics}
@@ -338,7 +360,15 @@ December\fi, \number \year}
 \end{figure}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Athlete Statistics}
+
+\begin{frame}{Athlete Fact Statistics}
+\begin{figure}
+    \includegraphics[scale=0.2]{img/athletes-stats.png}\hspace*{10cm}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[allowframebreaks]{Overall Athlete Statistics}
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{img/stats/ath1.png}
