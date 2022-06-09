@@ -122,7 +122,7 @@ information of a given athlete in a tournament. Our schema is illustrated in \cr
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{img/datawarehouse.pdf}
+    \includegraphics[width=\textwidth]{img/er.png}
     \caption{Datawarehouse schema}
     \label{fig:defact}
 \end{figure}
@@ -515,6 +515,9 @@ LIMIT 50;
 
 In this practical assignment, we were able to model, create and load the
 datawarehouse with the extracted information from files in the Lenex (LXF) format, as well as build informative reports that analytically summarize the information stored in the datawarehouse.
+
+It is also worth mentioning that, after restructuring the datawarehouse, we were no longer able to query how many athletes have participated 
+in both tournaments.
 
 As future work, it would be important to include information about other tournaments in the database.
 To do this, we would have to pre-process the data to ensure it conforms to the database schema.
